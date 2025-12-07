@@ -1,14 +1,22 @@
 const router = require("express").Router();
 const auth = require("../middleware/auth");
+const upload = require("../middleware/upload"); 
 const {
   getBooks,
+  getBook, 
   createBook,
   updateBook,
   deleteBook,
 } = require("../controllers/bookController");
 
-router.route("/").get(getBooks).post(auth, createBook);
+// Public routes
+router.get("/", getBooks);
+router.get("/:id", getBook);
 
-router.route("/:id").put(auth, updateBook).delete(auth, deleteBook);
+// Protected routes 
+router.post("/", auth, upload.single("image"), createBook);
+
+router.put("/:id", auth, upload.single("image"), updateBook);
+router.delete("/:id", auth, deleteBook);
 
 module.exports = router;

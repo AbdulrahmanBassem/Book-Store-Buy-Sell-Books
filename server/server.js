@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const connectDB = require("./utils/db");
+const path = require("path");
 const authRoutes = require("./routes/auth");
 const bookRoutes = require("./routes/books");
 const purchaseRoutes = require("./routes/purchases");
@@ -8,6 +9,8 @@ const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
 app.use(express.json());
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 connectDB();
 

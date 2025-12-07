@@ -1,4 +1,3 @@
-// backend/models/Purchase.js
 const mongoose = require("mongoose");
 
 const PurchaseSchema = new mongoose.Schema({

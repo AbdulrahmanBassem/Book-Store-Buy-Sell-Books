@@ -50,9 +50,7 @@ exports.register = async (req, res, next) => {
   }
 };
 
-// @desc    Authenticate a user
-// @route   POST /api/auth/login
-// @access  Public
+
 exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -62,8 +60,8 @@ exports.login = async (req, res, next) => {
       return res.status(400).json({ message: "Please add email and password" });
     }
 
-    // 2. Check for user (include password field which is select: false by default)
-    const user = await User.findOne({ email }).select("+password");
+    // 2. Check for user 
+    const user = await User.findOne({ email });
 
     if (user && (await bcrypt.compare(password, user.password))) {
       res.json({
