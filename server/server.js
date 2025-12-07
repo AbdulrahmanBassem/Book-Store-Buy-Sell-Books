@@ -11,6 +11,11 @@ app.use(express.json());
 
 connectDB();
 
+
+app.get("/", (req, res) => {
+  res.send("Bookstore API is running...");
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/books", bookRoutes);
 app.use("/api/purchases", purchaseRoutes);
