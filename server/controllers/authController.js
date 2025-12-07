@@ -127,3 +127,52 @@ exports.login = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.resendOtp = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "Please provide an email" });
+    }
+
+    // 1. Check if user exists
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // 2. Check if already verified
+    if (user.isVerified) {
+      return res.status(400).json({ message: "Account is already verified" });
+    }
+
+    // 3. Generate new OTP
+    const { otp, otpExpires } = generateOTP();
+
+    // 4. Update User
+    user.otp = otp;
+    user.otpExpires = otpExpires;
+    await user.save();
+
+    // 5. Send Email
+    try {
+      await sendEmail({
+        email: user.email,
+        subject: "BookStore - Resend Verification Code",
+        message: `Your new verification code is: ${otp}. It expires in 10 minutes.`,
+      });
+
+      res.status(200).json({
+        success: true,
+        message: "New OTP sent to your email",
+      });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Email could not be sent" });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
