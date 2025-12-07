@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
+const generateOTP = require("../utils/generateOTP");
+const sendEmail = require("../utils/sendEmail");
 
 // Generate JWT
 const generateToken = (id) => {
@@ -9,61 +11,109 @@ const generateToken = (id) => {
   });
 };
 
+
 exports.register = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const {name, email, password } = req.body;
 
-    // 1. Validate input 
     if (!name || !email || !password) {
       return res.status(400).json({ message: "Please add all fields" });
     }
 
-    // 2. Check if user exists
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // 3. Hash password
+    // Generate OTP
+    const { otp, otpExpires } = generateOTP();
+
+    // Hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // 4. Create user
+    // Create user 
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
+      otp,
+      otpExpires,
     });
 
-    if (user) {
-      res.status(201).json({
-        _id: user.id,
-        name: user.name,
+    // Send OTP Email
+    try {
+      await sendEmail({
         email: user.email,
-        token: generateToken(user._id),
+        subject: "BookStore Account Verification",
+        message: `Your verification code is: ${otp}. It expires in 10 minutes.`,
       });
-    } else {
-      res.status(400).json({ message: "Invalid user data" });
+
+      res.status(201).json({
+        success: true,
+        message: `Registered! An OTP has been sent to ${email}`,
+        userId: user._id, 
+      });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Email could not be sent" });
     }
   } catch (error) {
     next(error);
   }
 };
 
+exports.verify = async (req, res, next) => {
+  try {
+    const { email, otp } = req.body;
+
+    if (!email || !otp) {
+      return res.status(400).json({ message: "Please provide email and OTP" });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    // Check if OTP matches and is not expired
+    if (user.otp !== otp || user.otpExpires < Date.now()) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+
+    // Verify User
+    user.isVerified = true;
+    user.otp = undefined;
+    user.otpExpires = undefined;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Email verified successfully! You can now login.",
+      token: generateToken(user._id),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    // 1. Check for email and password
     if (!email || !password) {
       return res.status(400).json({ message: "Please add email and password" });
     }
 
-    // 2. Check for user 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("+password");
 
     if (user && (await bcrypt.compare(password, user.password))) {
+      // CHECK IF VERIFIED
+      if (!user.isVerified) {
+        return res.status(401).json({ message: "Please verify your email first" });
+      }
+
       res.json({
         _id: user.id,
         name: user.name,
