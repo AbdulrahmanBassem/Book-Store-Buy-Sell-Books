@@ -1,32 +1,26 @@
-// imports
+// backend/utils/sendEmail.js
 const nodemailer = require("nodemailer");
-const dotenv = require("dotenv");
 
-// Config
-dotenv.config();
+const sendEmail = async (options) => {
+  const transporter = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST_PROVIDER,
+    port: process.env.SMTP_PORT,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
 
-// transporter sender
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST_PROVIDER,
-  port: process.env.SMTP_PORT,
+  const message = {
+    from: `${process.env.FROM_NAME} <${process.env.EMAIL_USER}>`,
+    to: options.email,
+    subject: options.subject,
+    text: options.message,
+  };
 
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+  const info = await transporter.sendMail(message);
 
-async function sendEmail(to, subject, text) {
-  try {
-    await transporter.sendEmail({
-      from: process.env.EMAIL_USER,
-      to,
-      subject,
-      text,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
+  console.log("Message sent: %s", info.messageId);
+};
 
-module.exports = { sendEmail };
+module.exports = sendEmail;
