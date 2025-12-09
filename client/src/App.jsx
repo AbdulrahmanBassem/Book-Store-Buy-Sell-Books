@@ -19,6 +19,8 @@ import { EditBook } from "./pages/EditBook";
 import { PurchaseHistory } from "./pages/PurchaseHistory";
 import { MyBooks } from "./pages/MyBooks";
 import { Profile } from "./pages/Profile";
+import { ForgotPassword } from "./pages/ForgotPassword";
+import { ResetPassword } from "./pages/ResetPassword";
 
 // Utils
 import { api } from "./apis/api";
@@ -65,6 +67,8 @@ export default function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/verify-otp" element={<VerifyOTP />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password/:token" element={<ResetPassword />} />
               
             </>
           )}

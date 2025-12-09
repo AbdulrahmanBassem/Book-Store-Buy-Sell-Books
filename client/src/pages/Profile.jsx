@@ -18,14 +18,13 @@ export const Profile = () => {
 
   const dispatch = useDispatch();
 
-  // 1. Fetch Profile Data
+  // Fetch Profile Data
   useEffect(() => {
     async function fetchProfile() {
       try {
         const response = await api.get("/api/auth/profile");
         setUserData(response.data.data);
         
-        // Pre-fill name if ref exists
         if (nameRef.current) nameRef.current.value = response.data.data.name;
       } catch (error) {
         errorHandler(error);
@@ -36,7 +35,7 @@ export const Profile = () => {
     fetchProfile();
   }, []);
 
-  // 2. Handle Update
+  // Handle Update
   async function handleUpdate(e) {
     e.preventDefault();
     setUpdating(true);
@@ -45,7 +44,6 @@ export const Profile = () => {
     const password = passwordRef.current.value;
     const confirmPassword = confirmPasswordRef.current.value;
 
-    // Basic Validation
     if (password && password !== confirmPassword) {
       toast.error("Passwords do not match");
       setUpdating(false);
@@ -58,12 +56,10 @@ export const Profile = () => {
 
       const response = await api.put("/api/auth/profile", data);
       
-      // Update Redux state with new info
       dispatch(setUser(response.data.data));
       
       toast.success("Profile updated successfully");
       
-      // Clear password fields
       passwordRef.current.value = "";
       confirmPasswordRef.current.value = "";
     } catch (error) {
@@ -85,7 +81,6 @@ export const Profile = () => {
             </Card.Header>
             <Card.Body className="p-4">
               <Form onSubmit={handleUpdate}>
-                {/* Read-Only Email */}
                 <Form.Group className="mb-3">
                   <Form.Label>Email Address</Form.Label>
                   <Form.Control 
@@ -99,7 +94,6 @@ export const Profile = () => {
                   </Form.Text>
                 </Form.Group>
 
-                {/* Editable Name */}
                 <Form.Group className="mb-3">
                   <Form.Label>Full Name</Form.Label>
                   <Form.Control 
@@ -113,7 +107,6 @@ export const Profile = () => {
                 <hr className="my-4" />
                 <h5 className="mb-3 text-muted">Change Password</h5>
 
-                {/* Password Fields */}
                 <Form.Group className="mb-3">
                   <Form.Label>New Password</Form.Label>
                   <Form.Control 
