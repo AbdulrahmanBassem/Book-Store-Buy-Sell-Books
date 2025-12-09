@@ -6,6 +6,7 @@ const authRoutes = require("./routes/auth");
 const bookRoutes = require("./routes/books");
 const purchaseRoutes = require("./routes/purchases");
 const errorHandler = require("./middleware/errorHandler");
+const cors = require("cors");
 
 const app = express();
 app.use(express.json());
