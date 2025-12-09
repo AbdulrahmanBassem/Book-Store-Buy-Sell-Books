@@ -9,6 +9,13 @@ const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
 app.use(express.json());
+app.use(
+  cors({
+    origin: JSON.parse(process.env.PRODUCTION_ENV)
+      ? process.env.CLIENT_ORIGIN
+      : "*",
+  })
+);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
