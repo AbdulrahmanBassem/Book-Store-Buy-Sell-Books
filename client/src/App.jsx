@@ -18,6 +18,7 @@ import { BookDetails } from "./pages/BookDetails";
 import { EditBook } from "./pages/EditBook";
 import { PurchaseHistory } from "./pages/PurchaseHistory";
 import { MyBooks } from "./pages/MyBooks";
+import { Profile } from "./pages/Profile";
 
 // Utils
 import { api } from "./apis/api";
@@ -74,6 +75,7 @@ export default function App() {
               <Route path="/edit-book/:id" element={<EditBook />} />
               <Route path="/purchase-history" element={<PurchaseHistory />} />
               <Route path="/my-books" element={<MyBooks />} />
+              <Route path="/profile" element={<Profile />} />
             </>
           )}
 

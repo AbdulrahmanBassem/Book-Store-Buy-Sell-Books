@@ -58,6 +58,10 @@ export const Navbar = () => {
                   History
                 </Nav.Link>
 
+                <Nav.Link as={Link} to="/profile" className="me-3">
+                  Profile
+                </Nav.Link>
+
                 <Button variant="outline-danger" onClick={handleLogout} size="sm">
                   Logout
                 </Button>
