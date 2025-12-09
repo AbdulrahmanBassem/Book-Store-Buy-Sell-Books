@@ -1,4 +1,3 @@
-// client/src/App.jsx
 function App() {
   return (
     <div>
