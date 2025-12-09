@@ -14,7 +14,8 @@ import { Register } from "./pages/Register";
 import { VerifyOTP } from "./pages/VerifyOTP";
 import { Home } from "./pages/Home";
 import { CreateBook } from "./pages/CreateBook";
-
+import { BookDetails } from "./pages/BookDetails";
+import { EditBook } from "./pages/EditBook";
 
 // Utils
 import { api } from "./apis/api";
@@ -55,6 +56,7 @@ export default function App() {
       <Container className="my-4">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/books/:id" element={<BookDetails />} />
           {!isLoggedIn && (
             <>
               <Route path="/login" element={<Login />} />
@@ -67,6 +69,7 @@ export default function App() {
           {isLoggedIn && (
             <>
               <Route path="/create-book" element={<CreateBook />} />
+              <Route path="/edit-book/:id" element={<EditBook />} />
             </>
           )}
 

@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
-import { Container, Row, Col, Card, Button, Form, InputGroup } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Form,
+  InputGroup,
+} from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { api } from "../apis/api";
 import { errorHandler } from "../utils/errorHandler";
@@ -20,7 +29,7 @@ export const Home = () => {
       // Pass keyword if it exists
       const query = searchKey ? `?keyword=${searchKey}` : "";
       const response = await api.get(`/api/books${query}`);
-      
+
       setBooks(response.data.data);
     } catch (error) {
       errorHandler(error);
@@ -73,7 +82,11 @@ export const Home = () => {
                         ? `${baseURL}/${book.image.replace(/\\/g, "/")}`
                         : "https://via.placeholder.com/150"
                     }
-                    style={{ objectFit: "cover", height: "100%", width: "100%" }}
+                    style={{
+                      objectFit: "cover",
+                      height: "100%",
+                      width: "100%",
+                    }}
                   />
                 </div>
                 <Card.Body className="d-flex flex-column">
@@ -85,10 +98,17 @@ export const Home = () => {
                   </Card.Subtitle>
                   <Card.Text>
                     <strong>Price:</strong> ${book.price} <br />
-                    <small className="text-muted">Condition: {book.condition}</small>
+                    <small className="text-muted">
+                      Condition: {book.condition}
+                    </small>
                   </Card.Text>
-                  
-                  <Button variant="primary" className="mt-auto w-100">
+
+                  <Button
+                    as={Link}
+                    to={`/books/${book._id}`} 
+                    variant="primary"
+                    className="mt-auto w-100"
+                  >
                     View Details
                   </Button>
                 </Card.Body>
