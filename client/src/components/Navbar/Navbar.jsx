@@ -45,9 +45,15 @@ export const Navbar = () => {
 
             {/* Show Logout if Logged In */}
             {isLoggedIn && (
-              <Button variant="outline-danger" onClick={handleLogout} className="ms-2">
-                Logout
-              </Button>
+              <>
+                <Nav.Link as={Link} to="/create-book" className="text-warning fw-bold me-3">
+                  + Sell Book
+                </Nav.Link>
+
+                <Button variant="outline-danger" onClick={handleLogout} size="sm">
+                  Logout
+                </Button>
+              </>
             )}
           </Nav>
         </BNavbar.Collapse>

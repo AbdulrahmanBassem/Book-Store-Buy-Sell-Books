@@ -13,6 +13,8 @@ import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { VerifyOTP } from "./pages/VerifyOTP";
 import { Home } from "./pages/Home";
+import { CreateBook } from "./pages/CreateBook";
+
 
 // Utils
 import { api } from "./apis/api";
@@ -64,8 +66,7 @@ export default function App() {
 
           {isLoggedIn && (
             <>
-              
-              {/* <Route path="/create-book" element={<CreateBook />} /> */}
+              <Route path="/create-book" element={<CreateBook />} />
             </>
           )}
 
