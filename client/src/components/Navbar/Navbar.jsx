@@ -50,6 +50,10 @@ export const Navbar = () => {
                   + Sell Book
                 </Nav.Link>
 
+                <Nav.Link as={Link} to="/purchase-history" className="me-3">
+                  History
+                </Nav.Link>
+
                 <Button variant="outline-danger" onClick={handleLogout} size="sm">
                   Logout
                 </Button>
