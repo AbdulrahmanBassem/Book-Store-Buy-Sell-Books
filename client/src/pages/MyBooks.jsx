@@ -9,6 +9,7 @@ import { Loading } from "../components/Loading/Loading";
 export const MyBooks = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState(false); 
 
   const baseURL = import.meta.env.VITE_BACKEND_BASE || "http://localhost:5000";
 
@@ -36,6 +37,25 @@ export const MyBooks = () => {
       setBooks((prev) => prev.filter((book) => book._id !== id));
     } catch (error) {
       errorHandler(error);
+    }
+  }
+
+  async function handleMarkAvailable(id) {
+    if (!window.confirm("Mark this book as available for sale again?")) return;
+
+    setActionLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("status", "available");
+
+      await api.put(`/api/books/${id}`, formData);
+      
+      toast.success("Book is now available!");
+      fetchMyBooks(); 
+    } catch (error) {
+      errorHandler(error);
+    } finally {
+      setActionLoading(false);
     }
   }
 
@@ -73,25 +93,41 @@ export const MyBooks = () => {
                     <strong>Price:</strong> ${book.price}
                   </Card.Text>
                   
-                  <div className="mt-auto d-flex gap-2">
-                    <Button 
-                      as={Link} 
-                      to={`/edit-book/${book._id}`} 
-                      variant="outline-primary" 
-                      className="w-50"
-                      size="sm"
-                    >
-                      Edit
-                    </Button>
-                    <Button 
-                      variant="outline-danger" 
-                      className="w-50"
-                      size="sm"
-                      onClick={() => handleDelete(book._id)}
-                    >
-                      Delete
-                    </Button>
+                  <div className="mt-auto d-flex flex-column gap-2">
+                    {/* Status Toggle */}
+                    {book.status === "sold" && (
+                      <Button 
+                        variant="warning" 
+                        size="sm"
+                        onClick={() => handleMarkAvailable(book._id)}
+                        disabled={actionLoading}
+                        className="mb-1"
+                      >
+                        Mark as Available
+                      </Button>
+                    )}
+
+                    <div className="d-flex gap-2">
+                      <Button 
+                        as={Link} 
+                        to={`/edit-book/${book._id}`} 
+                        variant="outline-primary" 
+                        className="w-50"
+                        size="sm"
+                      >
+                        Edit
+                      </Button>
+                      <Button 
+                        variant="outline-danger" 
+                        className="w-50"
+                        size="sm"
+                        onClick={() => handleDelete(book._id)}
+                      >
+                        Delete
+                      </Button>
+                    </div>
                   </div>
+                  
                   <Button 
                     as={Link} 
                     to={`/books/${book._id}`} 
