@@ -12,6 +12,7 @@ import { Loading } from "./components/Loading/Loading"; // Optional usage
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { VerifyOTP } from "./pages/VerifyOTP";
+import { Home } from "./pages/Home";
 
 // Utils
 import { api } from "./apis/api";
@@ -46,28 +47,33 @@ export default function App() {
   return (
     <div>
       <Navbar />
-      
+
       <Toaster position="top-center" />
 
       <Container className="my-4">
         <Routes>
-          <Route path="/" element={<h1 className="text-center">Welcome to BookStore</h1>} />
+          <Route path="/" element={<Home />} />
           {!isLoggedIn && (
             <>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/verify-otp" element={<VerifyOTP />} />
+              
             </>
           )}
 
           {isLoggedIn && (
             <>
+              
               {/* <Route path="/create-book" element={<CreateBook />} /> */}
             </>
           )}
-          
+
           {/* 404 Route */}
-          <Route path="*" element={<h2 className="text-center mt-5">404 - Page Not Found</h2>} />
+          <Route
+            path="*"
+            element={<h2 className="text-center mt-5">404 - Page Not Found</h2>}
+          />
         </Routes>
       </Container>
     </div>
