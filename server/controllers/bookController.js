@@ -128,3 +128,17 @@ exports.deleteBook = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getMyBooks = async (req, res, next) => {
+  try {
+    const books = await Book.find({ seller: req.user.id }).sort("-createdAt");
+
+    res.status(200).json({
+      success: true,
+      count: books.length,
+      data: books,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

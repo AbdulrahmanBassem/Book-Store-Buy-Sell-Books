@@ -50,6 +50,10 @@ export const Navbar = () => {
                   + Sell Book
                 </Nav.Link>
 
+                <Nav.Link as={Link} to="/my-books">
+                  My Books
+                </Nav.Link>
+
                 <Nav.Link as={Link} to="/purchase-history" className="me-3">
                   History
                 </Nav.Link>

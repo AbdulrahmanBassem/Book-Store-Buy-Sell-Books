@@ -7,10 +7,12 @@ const {
   createBook,
   updateBook,
   deleteBook,
+  getMyBooks,
 } = require("../controllers/bookController");
 
 // Public routes
 router.get("/", getBooks);
+router.get("/my-books", auth, getMyBooks);
 router.get("/:id", getBook);
 
 // Protected routes 
