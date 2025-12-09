@@ -42,14 +42,14 @@ export const BookDetails = () => {
       return;
     }
 
-    // Confirm dialog
+    // Confirm
     if (!window.confirm(`Are you sure you want to buy "${book.title}" for $${book.price}?`)) return;
 
     setActionLoading(true);
     try {
       await api.post(`/api/purchases/${book._id}`);
-      toast.success("Purchase successful! Check your email.");
-      navigate("/"); // Redirect home or to purchase history
+      toast.success("Purchase successful!");
+      navigate("/");
     } catch (error) {
       errorHandler(error);
     } finally {
@@ -77,13 +77,11 @@ export const BookDetails = () => {
   if (!book) return <h2 className="text-center my-5">Book not found</h2>;
 
   // Check if current user is the owner
-  // Note: book.seller can be an object (populated) or string depending on backend
   const isOwner = isLoggedIn && user?._id === (book.seller._id || book.seller);
 
   return (
     <Container className="my-5">
       <Row className="justify-content-center">
-        {/* Image Column */}
         <Col md={5} className="mb-4">
           <Card className="shadow-sm border-0">
             <Card.Img
@@ -94,7 +92,6 @@ export const BookDetails = () => {
           </Card>
         </Col>
 
-        {/* Details Column */}
         <Col md={7}>
           <h2 className="display-5 fw-bold">{book.title}</h2>
           <h4 className="text-muted mb-3">by {book.author}</h4>
@@ -114,15 +111,13 @@ export const BookDetails = () => {
 
           <hr className="my-4" />
 
-          {/* Action Buttons */}
           <div className="d-flex gap-3">
             {isOwner ? (
-              // Owner Actions
               <>
                 <Button 
                   variant="outline-primary" 
                   size="lg"
-                  onClick={() => navigate(`/edit-book/${book._id}`)} // We will build this next
+                  onClick={() => navigate(`/edit-book/${book._id}`)} 
                   disabled={actionLoading}
                 >
                   Edit Listing
@@ -137,7 +132,6 @@ export const BookDetails = () => {
                 </Button>
               </>
             ) : (
-              // Buyer Actions
               <Button 
                 variant="success" 
                 size="lg" 

@@ -55,25 +55,21 @@ export const CreateBook = () => {
           <h2 className="text-center mb-4">Sell a Book</h2>
           <Form onSubmit={handleCreateBook} className="border p-4 rounded shadow-sm bg-white">
             
-            {/* Title */}
             <Form.Group className="mb-3">
               <Form.Label>Book Title</Form.Label>
               <Form.Control type="text" ref={titleRef} required placeholder="e.g. The Great Gatsby" />
             </Form.Group>
 
-            {/* Author */}
             <Form.Group className="mb-3">
               <Form.Label>Author</Form.Label>
               <Form.Control type="text" ref={authorRef} required placeholder="e.g. F. Scott Fitzgerald" />
             </Form.Group>
 
-            {/* Description */}
             <Form.Group className="mb-3">
               <Form.Label>Description</Form.Label>
               <Form.Control as="textarea" rows={3} ref={descriptionRef} required placeholder="Brief summary or details..." />
             </Form.Group>
 
-            {/* Price & Condition*/}
             <div className="row">
               <div className="col-md-6">
                 <Form.Group className="mb-3">
@@ -96,7 +92,6 @@ export const CreateBook = () => {
               </div>
             </div>
 
-            {/* Image Upload */}
             <Form.Group className="mb-4">
               <Form.Label>Book Cover Image</Form.Label>
               <Form.Control type="file" ref={imageRef} accept="image/*" />

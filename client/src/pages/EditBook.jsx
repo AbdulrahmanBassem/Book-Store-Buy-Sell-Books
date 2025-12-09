@@ -21,14 +21,13 @@ export const EditBook = () => {
   const conditionRef = useRef();
   const imageRef = useRef();
 
-  // 1. Fetch Existing Data
   useEffect(() => {
     async function fetchBook() {
       try {
         const response = await api.get(`/api/books/${id}`);
         const book = response.data.data;
 
-        // Pre-fill fields manually since we use refs
+        // Pre-fill fields
         if (titleRef.current) titleRef.current.value = book.title;
         if (authorRef.current) authorRef.current.value = book.author;
         if (descriptionRef.current) descriptionRef.current.value = book.description;
@@ -45,7 +44,7 @@ export const EditBook = () => {
     fetchBook();
   }, [id, navigate]);
 
-  // 2. Handle Update
+  // Handle Update
   async function handleUpdateBook(e) {
     e.preventDefault();
     setSubmitting(true);
@@ -58,7 +57,6 @@ export const EditBook = () => {
       formData.append("price", priceRef.current.value);
       formData.append("condition", conditionRef.current.value);
 
-      // Only append image if a new one was selected
       if (imageRef.current.files[0]) {
         formData.append("image", imageRef.current.files[0]);
       }
@@ -66,7 +64,7 @@ export const EditBook = () => {
       await api.put(`/api/books/${id}`, formData);
 
       toast.success("Book updated successfully!");
-      navigate(`/books/${id}`); // Go back to details page
+      navigate(`/books/${id}`); 
     } catch (error) {
       errorHandler(error);
     } finally {

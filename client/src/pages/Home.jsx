@@ -19,14 +19,12 @@ export const Home = () => {
   const [loading, setLoading] = useState(false);
   const [keyword, setKeyword] = useState("");
 
-  // Get Backend URL for images
   const baseURL = import.meta.env.VITE_BACKEND_BASE || "http://localhost:5000";
 
-  // Fetch Books Function
+  // Fetch Books
   async function fetchBooks(searchKey = "") {
     setLoading(true);
     try {
-      // Pass keyword if it exists
       const query = searchKey ? `?keyword=${searchKey}` : "";
       const response = await api.get(`/api/books${query}`);
 
@@ -38,12 +36,11 @@ export const Home = () => {
     }
   }
 
-  // Initial Load
   useEffect(() => {
     fetchBooks();
   }, []);
 
-  // Search Handler
+  // Handle Search
   const handleSearch = (e) => {
     e.preventDefault();
     fetchBooks(keyword);
