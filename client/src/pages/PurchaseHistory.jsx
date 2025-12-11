@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
-import { Container, Table, Badge, Button } from "react-bootstrap";
+import { Container, Table, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { FaExternalLinkAlt } from "react-icons/fa";
 import { api } from "../apis/api";
 import { errorHandler } from "../utils/errorHandler";
 import { Loading } from "../components/Loading/Loading";
+
+// CSS
+import "../styles/PurchaseHistory.css";
 
 export const PurchaseHistory = () => {
   const [purchases, setPurchases] = useState([]);
@@ -27,26 +31,30 @@ export const PurchaseHistory = () => {
 
   return (
     <Container className="my-5">
-      <h2 className="text-center mb-4">My Purchase History</h2>
-      
+      <div className="page-header">
+        <h2 className="page-title">My Orders</h2>
+        <p className="text-muted mb-0">Track your book purchases</p>
+      </div>
+
       {purchases.length === 0 ? (
-        <div className="text-center mt-5">
-          <h4>You haven't bought any books yet.</h4>
+        <div className="text-center mt-5 py-5 bg-light rounded-3">
+          <h4 className="text-muted mb-3">You haven't bought any books yet.</h4>
           <Link to="/">
-            <Button variant="primary" className="mt-3">Browse Books</Button>
+            <Button variant="primary" className="px-4 py-2 fw-bold">
+              Browse Books
+            </Button>
           </Link>
         </div>
       ) : (
-        <Table responsive striped bordered hover className="shadow-sm">
-          <thead className="bg-dark text-white">
+        <Table responsive className="history-table mb-0">
+          <thead>
             <tr>
               <th>#</th>
-              <th>Book Title</th>
-              <th>Author</th>
-              <th>Price</th>
+              <th>Book Details</th>
               <th>Seller</th>
-              <th>Purchase Date</th>
-              <th>Action</th>
+              <th>Price</th>
+              <th>Date</th>
+              <th className="text-center">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -54,29 +62,30 @@ export const PurchaseHistory = () => {
               <tr key={purchase._id}>
                 <td>{index + 1}</td>
                 {purchase.book ? (
-                  <>
-                    <td className="fw-bold">{purchase.book.title}</td>
-                    <td>{purchase.book.author}</td>
-                    <td>${purchase.book.price}</td>
-                    <td>{purchase.book.seller?.name || "Unknown"}</td>
-                  </>
+                  <td>
+                    <div className="fw-bold">{purchase.book.title}</div>
+                    <small className="text-muted">
+                      by {purchase.book.author}
+                    </small>
+                  </td>
                 ) : (
-                  <td colSpan="4" className="text-muted fst-italic">
-                    Book no longer exists (Deleted by seller)
+                  <td className="text-muted fst-italic">
+                    Book no longer exists
                   </td>
                 )}
-                <td>
-                  {new Date(purchase.purchaseDate).toLocaleDateString()}
-                </td>
-                <td>
+                <td>{purchase.book?.seller?.name || "Unknown"}</td>
+                <td className="purchase-price">${purchase.book?.price}</td>
+                <td>{new Date(purchase.purchaseDate).toLocaleDateString()}</td>
+                <td className="text-center">
                   {purchase.book && (
-                    <Button 
-                      as={Link} 
-                      to={`/books/${purchase.book._id}`} 
-                      variant="outline-info" 
+                    <Button
+                      as={Link}
+                      to={`/books/${purchase.book._id}`}
+                      variant="outline-secondary"
                       size="sm"
+                      className="d-inline-flex align-items-center gap-1"
                     >
-                      View Book
+                      View <FaExternalLinkAlt size={10} />
                     </Button>
                   )}
                 </td>

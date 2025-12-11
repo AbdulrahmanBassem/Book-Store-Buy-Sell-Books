@@ -1,0 +1,33 @@
+.history-table {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  background: white;
+}
+
+.history-table thead th {
+  background-color: #212529;
+  color: white;
+  border: none;
+  padding: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.history-table tbody td {
+  vertical-align: middle;
+  padding: 1rem;
+  border-bottom: 1px solid #f1f3f5;
+  color: #495057;
+}
+
+.history-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.purchase-price {
+  font-weight: 700;
+  color: #198754; 
+}
