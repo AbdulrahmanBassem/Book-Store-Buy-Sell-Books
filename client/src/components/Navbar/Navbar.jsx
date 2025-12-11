@@ -13,6 +13,9 @@ import {
   FaPlusCircle 
 } from "react-icons/fa";
 
+// CSS
+import "./Navbar.css";
+
 export const Navbar = () => {
   const { isLoggedIn, user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -24,20 +27,8 @@ export const Navbar = () => {
     go("/login");
   }
 
-  const navLinkStyle = ({ isActive }) => ({
-    color: isActive ? "#fff" : "rgba(255, 255, 255, 0.7)",
-    fontWeight: isActive ? "600" : "400",
-    borderBottom: isActive ? "3px solid #ffc107" : "3px solid transparent",
-    paddingBottom: "5px",
-    textDecoration: "none",
-    transition: "all 0.3s ease",
-    display: "flex",
-    alignItems: "center",
-    gap: "8px"
-  });
-
   return (
-    <BNavbar expand="lg" bg="dark" data-bs-theme="dark" className="shadow-sm sticky-top py-3">
+    <BNavbar expand="lg" bg="dark" data-bs-theme="dark" className="navbar-custom sticky-top py-3">
       <Container>
         <BNavbar.Brand 
           as={Link} 
@@ -53,30 +44,30 @@ export const Navbar = () => {
         <BNavbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto align-items-center gap-3">
             
-            <Nav.Link as={NavLink} to="/" style={navLinkStyle} end>
+            <Nav.Link as={NavLink} to="/" className="nav-link-custom" end>
               <FaHome /> Home
             </Nav.Link>
 
             {!isLoggedIn ? (
               <>
-                <Nav.Link as={NavLink} to="/login" style={navLinkStyle}>
+                <Nav.Link as={NavLink} to="/login" className="nav-link-custom">
                   <FaSignInAlt /> Login
                 </Nav.Link>
-                <Nav.Link as={NavLink} to="/register" style={navLinkStyle}>
+                <Nav.Link as={NavLink} to="/register" className="nav-link-custom">
                   <FaUserPlus /> Register
                 </Nav.Link>
               </>
             ) : (
               <>
-                <Nav.Link as={NavLink} to="/my-books" style={navLinkStyle}>
+                <Nav.Link as={NavLink} to="/my-books" className="nav-link-custom">
                   <FaBook /> My Books
                 </Nav.Link>
 
-                <Nav.Link as={NavLink} to="/purchase-history" style={navLinkStyle}>
+                <Nav.Link as={NavLink} to="/purchase-history" className="nav-link-custom">
                   <FaHistory /> History
                 </Nav.Link>
                 
-                <Nav.Link as={NavLink} to="/profile" style={navLinkStyle}>
+                <Nav.Link as={NavLink} to="/profile" className="nav-link-custom">
                   <FaUser /> {user?.name ? user.name.split(' ')[0] : 'Profile'}
                 </Nav.Link>
 
@@ -84,7 +75,7 @@ export const Navbar = () => {
                   as={Link} 
                   to="/create-book" 
                   variant="warning" 
-                  className="fw-bold d-flex align-items-center gap-2 rounded-pill px-4 ms-2 text-dark"
+                  className="btn-sell rounded-pill px-4 ms-2"
                 >
                   <FaPlusCircle /> Sell Book
                 </Button>
@@ -93,7 +84,7 @@ export const Navbar = () => {
                   variant="outline-light" 
                   onClick={handleLogout} 
                   size="sm"
-                  className="d-flex align-items-center gap-2 rounded-pill px-3 ms-2"
+                  className="btn-logout rounded-pill px-3 ms-2"
                   title="Logout"
                 >
                   <FaSignOutAlt />

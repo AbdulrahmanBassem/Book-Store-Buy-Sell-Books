@@ -1,0 +1,40 @@
+.navbar-custom {
+  box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+}
+
+.nav-link-custom {
+  color: rgba(255, 255, 255, 0.7) !important; 
+  font-weight: 400;
+  border-bottom: 3px solid transparent;
+  padding-bottom: 5px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-link-custom:hover {
+  color: #fff !important;
+}
+
+.nav-link-custom.active {
+  color: #fff !important;
+  font-weight: 600;
+  border-bottom: 3px solid #ffc107; 
+}
+
+.btn-sell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  color: #212529 !important;
+}
+
+.btn-logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
