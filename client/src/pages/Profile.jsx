@@ -3,9 +3,12 @@ import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { api } from "../apis/api";
-import { setUser } from "../store/slices/userSlice"; // To update Redux with new name
+import { setUser } from "../store/slices/userSlice";
 import { errorHandler } from "../utils/errorHandler";
 import { Loading } from "../components/Loading/Loading";
+
+// CSS
+import "../styles/Profile.css";
 
 export const Profile = () => {
   const [loading, setLoading] = useState(true);
@@ -18,13 +21,11 @@ export const Profile = () => {
 
   const dispatch = useDispatch();
 
-  // Fetch Profile Data
   useEffect(() => {
     async function fetchProfile() {
       try {
         const response = await api.get("/api/auth/profile");
         setUserData(response.data.data);
-        
         if (nameRef.current) nameRef.current.value = response.data.data.name;
       } catch (error) {
         errorHandler(error);
@@ -35,7 +36,6 @@ export const Profile = () => {
     fetchProfile();
   }, []);
 
-  // Handle Update
   async function handleUpdate(e) {
     e.preventDefault();
     setUpdating(true);
@@ -55,11 +55,8 @@ export const Profile = () => {
       if (password) data.password = password;
 
       const response = await api.put("/api/auth/profile", data);
-      
       dispatch(setUser(response.data.data));
-      
       toast.success("Profile updated successfully");
-      
       passwordRef.current.value = "";
       confirmPasswordRef.current.value = "";
     } catch (error) {
@@ -75,26 +72,30 @@ export const Profile = () => {
     <Container className="my-5">
       <Row className="justify-content-center">
         <Col md={8} lg={6}>
-          <Card className="shadow-sm border-0">
-            <Card.Header className="bg-primary text-white text-center py-3">
-              <h3 className="mb-0">My Profile</h3>
-            </Card.Header>
-            <Card.Body className="p-4">
+          <Card className="profile-card">
+            <div className="profile-header">
+              <div className="profile-avatar">
+                {userData?.name?.charAt(0).toUpperCase()}
+              </div>
+              <h3 className="mb-0">{userData?.name}</h3>
+              <p className="text-white-50 mb-0">{userData?.email}</p>
+            </div>
+            
+            <Card.Body className="p-4 p-md-5">
               <Form onSubmit={handleUpdate}>
+                
+                <h5 className="section-title">Account Details</h5>
+                
                 <Form.Group className="mb-3">
                   <Form.Label>Email Address</Form.Label>
                   <Form.Control 
                     type="email" 
                     value={userData?.email || ""} 
                     disabled 
-                    className="bg-light"
                   />
-                  <Form.Text className="text-muted">
-                    Email cannot be changed.
-                  </Form.Text>
                 </Form.Group>
 
-                <Form.Group className="mb-3">
+                <Form.Group className="mb-4">
                   <Form.Label>Full Name</Form.Label>
                   <Form.Control 
                     type="text" 
@@ -104,8 +105,7 @@ export const Profile = () => {
                   />
                 </Form.Group>
 
-                <hr className="my-4" />
-                <h5 className="mb-3 text-muted">Change Password</h5>
+                <h5 className="section-title mt-5">Security</h5>
 
                 <Form.Group className="mb-3">
                   <Form.Label>New Password</Form.Label>
@@ -126,14 +126,16 @@ export const Profile = () => {
                   />
                 </Form.Group>
 
-                <Button 
-                  variant="primary" 
-                  type="submit" 
-                  className="w-100" 
-                  disabled={updating}
-                >
-                  {updating ? "Updating..." : "Save Changes"}
-                </Button>
+                <div className="d-grid mt-5">
+                  <Button 
+                    variant="success" 
+                    type="submit" 
+                    className="py-3 fw-bold text-uppercase" 
+                    disabled={updating}
+                  >
+                    {updating ? "Updating..." : "Save Changes"}
+                  </Button>
+                </div>
               </Form>
             </Card.Body>
           </Card>
