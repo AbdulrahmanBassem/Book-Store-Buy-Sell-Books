@@ -94,23 +94,25 @@ Start the frontend development server:
 npm run dev
 
 🔗 API Endpoints
-Auth
-POST /api/auth/register - Register new user
-POST /api/auth/login - Login user
-POST /api/auth/verify - Verify email OTP
-POST /api/auth/resend-otp - Resend verification OTP
-POST /api/auth/forgot-password - Request password reset link
-POST /api/auth/reset-password - Reset password with token
-GET /api/auth/profile - Get current user profile (Protected)
-PUT /api/auth/profile - Update user profile (Protected)
-Books
-GET /api/books - Get all available books (supports ?keyword= search)
-GET /api/books/my-books - Get books listed by the logged-in user (Protected)
-GET /api/books/:id - Get details of a specific book
-POST /api/books - Create a new book listing (Protected)
-PUT /api/books/:id - Update a book listing (Protected)
-DELETE /api/books/:id - Delete a book listing (Protected)
-Purchases
-POST /api/purchases/:bookId - Buy a specific book (Protected)
-GET /api/purchases - Get user's purchase history (Protected)
+### Auth
+- POST /api/auth/register - Register new user
+- POST /api/auth/login - Login user
+- POST /api/auth/verify - Verify email OTP
+- POST /api/auth/resend-otp - Resend verification OTP
+- POST /api/auth/forgot-password - Request password reset link
+- POST /api/auth/reset-password - Reset password with token
+- GET /api/auth/profile - Get current user profile (Protected)
+- PUT /api/auth/profile - Update user profile (Protected)
+
+### Books
+- GET /api/books - Get all available books (supports ?keyword= search)
+- GET /api/books/my-books - Get books listed by the logged-in user (Protected)
+- GET /api/books/:id - Get details of a specific book
+- POST /api/books - Create a new book listing (Protected)
+- PUT /api/books/:id - Update a book listing (Protected)
+- DELETE /api/books/:id - Delete a book listing (Protected)
+
+### Purchases
+- POST /api/purchases/:bookId - Buy a specific book (Protected)
+- GET /api/purchases - Get user's purchase history (Protected)
 
