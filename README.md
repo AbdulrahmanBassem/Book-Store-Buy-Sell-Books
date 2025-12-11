@@ -50,7 +50,7 @@ A full-stack MERN application where users can buy and sell books. The platform f
 git clone https://github.com/AbdulrahmanBassem/Book-Store-Buy-Sell-Books.git
 
 
-2. Backend Setup
+### 2. Backend Setup
 Navigate to the server directory and install dependencies:
 
 Bash
@@ -78,7 +78,7 @@ Start the backend server:
 
 npm start
 
-3. Frontend Setup
+### 3. Frontend Setup
 Navigate to the client directory and install dependencies:
 
 cd client
