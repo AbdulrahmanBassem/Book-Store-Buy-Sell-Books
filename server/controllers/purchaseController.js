@@ -13,13 +13,11 @@ exports.buyBook = async (req, res, next) => {
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
-
-    // Check if book is already sold
-    if (book.status === "sold") {
-      return res.status(400).json({ message: "This book is already sold" });
+    // Check stock 
+    if (book.stock < 1) {
+      return res.status(400).json({ message: "This book is out of stock" });
     }
 
-    // Prevent user from buying their own book
     if (book.seller._id.toString() === req.user.id) {
       return res.status(400).json({ message: "You cannot buy your own book" });
     }
@@ -30,8 +28,14 @@ exports.buyBook = async (req, res, next) => {
       buyer: req.user.id,
     });
 
-    // Mark book as sold
-    book.status = "sold";
+    // Reduce Stock
+    book.stock -= 1;
+
+    // If stock hits 0, mark as sold
+    if (book.stock === 0) {
+      book.status = "sold";
+    }
+    
     await book.save();
 
     // Send Email to Seller

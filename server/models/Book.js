@@ -23,6 +23,18 @@ const BookSchema = new mongoose.Schema({
     enum: ["New", "Like New", "Good", "Fair", "Poor"],
     required: [true, "Please specify the condition"],
   },
+  category: {
+    type: String,
+    required: [true, "Please add a category"],
+    enum: ["Fiction", "Non-Fiction", "Science", "Technology", "History", "Biography", "Business", "Other"],
+    default: "Other"
+  },
+  stock: {
+    type: Number,
+    required: [true, "Please add stock quantity"],
+    min: 0,
+    default: 1,
+  },
   image: {
     type: String, 
     default: "no-photo.jpg",

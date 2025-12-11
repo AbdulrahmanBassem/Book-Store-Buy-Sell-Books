@@ -13,12 +13,13 @@ export const EditBook = () => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   
-  // Refs
   const titleRef = useRef();
   const authorRef = useRef();
   const descriptionRef = useRef();
   const priceRef = useRef();
   const conditionRef = useRef();
+  const categoryRef = useRef(); 
+  const stockRef = useRef();    
   const imageRef = useRef();
 
   useEffect(() => {
@@ -27,12 +28,13 @@ export const EditBook = () => {
         const response = await api.get(`/api/books/${id}`);
         const book = response.data.data;
 
-        // Pre-fill fields
         if (titleRef.current) titleRef.current.value = book.title;
         if (authorRef.current) authorRef.current.value = book.author;
         if (descriptionRef.current) descriptionRef.current.value = book.description;
         if (priceRef.current) priceRef.current.value = book.price;
         if (conditionRef.current) conditionRef.current.value = book.condition;
+        if (categoryRef.current) categoryRef.current.value = book.category || "Other";
+        if (stockRef.current) stockRef.current.value = book.stock;
         
       } catch (error) {
         errorHandler(error);
@@ -44,7 +46,6 @@ export const EditBook = () => {
     fetchBook();
   }, [id, navigate]);
 
-  // Handle Update
   async function handleUpdateBook(e) {
     e.preventDefault();
     setSubmitting(true);
@@ -56,6 +57,8 @@ export const EditBook = () => {
       formData.append("description", descriptionRef.current.value);
       formData.append("price", priceRef.current.value);
       formData.append("condition", conditionRef.current.value);
+      formData.append("category", categoryRef.current.value);
+      formData.append("stock", stockRef.current.value);
 
       if (imageRef.current.files[0]) {
         formData.append("image", imageRef.current.files[0]);
@@ -91,11 +94,32 @@ export const EditBook = () => {
               <Form.Control type="text" ref={authorRef} required />
             </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Description</Form.Label>
-              <Form.Control as="textarea" rows={3} ref={descriptionRef} required />
-            </Form.Group>
+            {/* Category & Stock */}
+            <div className="row">
+              <div className="col-md-6">
+                <Form.Group className="mb-3">
+                  <Form.Label>Category</Form.Label>
+                  <Form.Select ref={categoryRef} required>
+                    <option value="Fiction">Fiction</option>
+                    <option value="Non-Fiction">Non-Fiction</option>
+                    <option value="Science">Science</option>
+                    <option value="Technology">Technology</option>
+                    <option value="History">History</option>
+                    <option value="Biography">Biography</option>
+                    <option value="Business">Business</option>
+                    <option value="Other">Other</option>
+                  </Form.Select>
+                </Form.Group>
+              </div>
+              <div className="col-md-6">
+                <Form.Group className="mb-3">
+                  <Form.Label>Stock Quantity</Form.Label>
+                  <Form.Control type="number" ref={stockRef} required min="0" />
+                </Form.Group>
+              </div>
+            </div>
 
+            {/* Price & Condition */}
             <div className="row">
               <div className="col-md-6">
                 <Form.Group className="mb-3">
@@ -117,12 +141,14 @@ export const EditBook = () => {
               </div>
             </div>
 
+            <Form.Group className="mb-3">
+              <Form.Label>Description</Form.Label>
+              <Form.Control as="textarea" rows={3} ref={descriptionRef} required />
+            </Form.Group>
+
             <Form.Group className="mb-4">
               <Form.Label>Update Cover Image (Optional)</Form.Label>
               <Form.Control type="file" ref={imageRef} accept="image/*" />
-              <Form.Text className="text-muted">
-                Leave empty to keep the current image.
-              </Form.Text>
             </Form.Group>
 
             <div className="d-flex gap-2">

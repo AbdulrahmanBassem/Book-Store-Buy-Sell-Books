@@ -2,23 +2,26 @@ const Book = require("../models/Book");
 
 exports.getBooks = async (req, res, next) => {
   try {
-    const { keyword } = req.query;
+    const { keyword, category } = req.query; 
     
-    // Search logic
-    let query = {};
+    let query = {
+      status: "available", 
+    };
+
     if (keyword) {
-      query = {
-        $or: [
-          { title: { $regex: keyword, $options: "i" } }, 
-          { author: { $regex: keyword, $options: "i" } }, 
-        ],
-      };
+      query.$or = [
+        { title: { $regex: keyword, $options: "i" } },
+        { author: { $regex: keyword, $options: "i" } },
+      ];
     }
 
-    // Return available books
-    query.status = "available";
+    if (category && category !== "All") {
+      query.category = category;
+    }
 
-    const books = await Book.find(query).populate("seller", "name email");
+    const books = await Book.find(query)
+      .populate("seller", "name email")
+      .sort("-createdAt"); 
 
     res.status(200).json({
       success: true,

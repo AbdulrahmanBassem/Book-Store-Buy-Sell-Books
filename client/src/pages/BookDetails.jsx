@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button, Badge, Card, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -18,7 +18,6 @@ export const BookDetails = () => {
 
   const baseURL = import.meta.env.VITE_BACKEND_BASE || "http://localhost:5000";
 
-  // Fetch Book Data
   useEffect(() => {
     async function fetchBook() {
       try {
@@ -34,7 +33,6 @@ export const BookDetails = () => {
     fetchBook();
   }, [id, navigate]);
 
-  // Handle Buy Book
   async function handleBuy() {
     if (!isLoggedIn) {
       toast.error("Please login to buy books");
@@ -42,14 +40,15 @@ export const BookDetails = () => {
       return;
     }
 
-    // Confirm
     if (!window.confirm(`Are you sure you want to buy "${book.title}" for $${book.price}?`)) return;
 
     setActionLoading(true);
     try {
       await api.post(`/api/purchases/${book._id}`);
       toast.success("Purchase successful!");
-      navigate("/");
+      const response = await api.get(`/api/books/${id}`);
+      setBook(response.data.data);
+      
     } catch (error) {
       errorHandler(error);
     } finally {
@@ -57,9 +56,8 @@ export const BookDetails = () => {
     }
   }
 
-  // Handle Delete Book
   async function handleDelete() {
-    if (!window.confirm("Are you sure you want to delete this listing? This cannot be undone.")) return;
+    if (!window.confirm("Are you sure you want to delete this listing?")) return;
 
     setActionLoading(true);
     try {
@@ -76,8 +74,8 @@ export const BookDetails = () => {
   if (loading) return <Loading />;
   if (!book) return <h2 className="text-center my-5">Book not found</h2>;
 
-  // Check if current user is the owner
   const isOwner = isLoggedIn && user?._id === (book.seller._id || book.seller);
+  const isOutOfStock = book.stock < 1;
 
   return (
     <Container className="my-5">
@@ -97,11 +95,14 @@ export const BookDetails = () => {
           <h4 className="text-muted mb-3">by {book.author}</h4>
           
           <div className="mb-4">
-            <Badge bg={book.status === "available" ? "success" : "danger"} className="me-2 p-2">
-              {book.status === "available" ? "Available" : "Sold Out"}
+            <Badge bg="secondary" className="me-2 p-2">
+              {book.category || "General"}
             </Badge>
-            <Badge bg="info" className="p-2 text-dark">
+            <Badge bg="info" className="me-2 p-2 text-dark">
               Condition: {book.condition}
+            </Badge>
+            <Badge bg={isOutOfStock ? "danger" : "success"} className="p-2">
+              {isOutOfStock ? "Out of Stock" : `${book.stock} In Stock`}
             </Badge>
           </div>
 
@@ -137,9 +138,9 @@ export const BookDetails = () => {
                 size="lg" 
                 className="px-5"
                 onClick={handleBuy}
-                disabled={book.status === "sold" || actionLoading}
+                disabled={isOutOfStock || actionLoading}
               >
-                {actionLoading ? <Spinner size="sm" /> : book.status === "sold" ? "Sold Out" : "Buy Now"}
+                {actionLoading ? <Spinner size="sm" /> : isOutOfStock ? "Sold Out" : "Buy Now"}
               </Button>
             )}
           </div>
