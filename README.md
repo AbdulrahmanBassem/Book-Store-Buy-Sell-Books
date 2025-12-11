@@ -53,43 +53,44 @@ git clone https://github.com/AbdulrahmanBassem/Book-Store-Buy-Sell-Books.git
 ### 2. Backend Setup
 Navigate to the server directory and install dependencies:
 
-Bash
+- cd server
+- npm install
+##
+## Create a .env file in the server directory with the following variables:
 
-cd server
-npm install
-Create a .env file in the server directory with the following variables:
+- PORT=5000
+- MONGO_URI=mongodb://localhost:27017/bookstore
+- JWT_SECRET=your_jwt_secret
+- NODE_ENV=development
 
-
-PORT=5000
-MONGO_URI=mongodb://localhost:27017/bookstore
-JWT_SECRET=your_jwt_secret
-NODE_ENV=development
-
-EMAIL_HOST_PROVIDER=smtp.gmail.com
-SMTP_PORT=587
-EMAIL_USER=your_email@gmail.com
-EMAIL_PASS=your_email_app_password
-FROM_NAME=BookStore
+- EMAIL_HOST_PROVIDER=smtp.gmail.com
+- SMTP_PORT=587
+- EMAIL_USER=your_email@gmail.com
+- EMAIL_PASS=your_email_app_password
+- FROM_NAME=BookStore
 
 
-CLIENT_ORIGIN=http://localhost:5173
-PRODUCTION_ENV=false
-Start the backend server:
+- CLIENT_ORIGIN=http://localhost:5173
+- PRODUCTION_ENV=false
+
+
+# Start the backend server:
 
 npm start
 
 ### 3. Frontend Setup
 Navigate to the client directory and install dependencies:
 
-cd client
-npm install
-Create a .env file in the client directory:
+- cd client
+- npm install
 
-Code snippet
+## Create a .env file in the client directory:
 
-VITE_BACKEND_BASE=http://localhost:5000
-VITE_PRODUCTION_ENV=false
-Start the frontend development server:
+
+- VITE_BACKEND_BASE=http://localhost:5000
+- VITE_PRODUCTION_ENV=false
+
+# Start the frontend development server:
 
 npm run dev
 
