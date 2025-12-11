@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { Button, Form, Container } from "react-bootstrap";
+import { Button, Form, Container, Row, Col, Card } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { api } from "../apis/api";
 import { errorHandler } from "../utils/errorHandler";
 import { Loading } from "../components/Loading/Loading";
+
+// CSS
+import "../styles/BookFrom.css";
 
 export const EditBook = () => {
   const { id } = useParams();
@@ -18,8 +21,8 @@ export const EditBook = () => {
   const descriptionRef = useRef();
   const priceRef = useRef();
   const conditionRef = useRef();
-  const categoryRef = useRef(); 
-  const stockRef = useRef();    
+  const categoryRef = useRef();
+  const stockRef = useRef();
   const imageRef = useRef();
 
   useEffect(() => {
@@ -79,89 +82,106 @@ export const EditBook = () => {
 
   return (
     <Container className="my-5">
-      <div className="row justify-content-center">
-        <div className="col-md-8 col-lg-6">
-          <h2 className="text-center mb-4">Edit Listing</h2>
-          <Form onSubmit={handleUpdateBook} className="border p-4 rounded shadow-sm bg-white">
+      <Row className="justify-content-center">
+        <Col md={10} lg={8}>
+          <Card className="form-card">
+            <div className="form-header">
+              <h2>Edit Listing</h2>
+              <p className="text-white-50 mb-0">Update your book details</p>
+            </div>
             
-            <Form.Group className="mb-3">
-              <Form.Label>Book Title</Form.Label>
-              <Form.Control type="text" ref={titleRef} required />
-            </Form.Group>
+            <Card.Body className="p-4 p-md-5">
+              <Form onSubmit={handleUpdateBook}>
+                
+                <h5 className="text-muted mb-4 border-bottom pb-2">Information</h5>
+                <Row className="g-3 mb-4">
+                  <Col md={6}>
+                    <Form.Group>
+                      <Form.Label className="form-label-custom">Book Title</Form.Label>
+                      <Form.Control type="text" ref={titleRef} required />
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group>
+                      <Form.Label className="form-label-custom">Author</Form.Label>
+                      <Form.Control type="text" ref={authorRef} required />
+                    </Form.Group>
+                  </Col>
+                </Row>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Author</Form.Label>
-              <Form.Control type="text" ref={authorRef} required />
-            </Form.Group>
+                <Row className="g-3 mb-3">
+                  <Col md={6}>
+                    <Form.Group>
+                      <Form.Label className="form-label-custom">Category</Form.Label>
+                      <Form.Select ref={categoryRef} required>
+                        <option value="Fiction">Fiction</option>
+                        <option value="Non-Fiction">Non-Fiction</option>
+                        <option value="Science">Science</option>
+                        <option value="Technology">Technology</option>
+                        <option value="History">History</option>
+                        <option value="Biography">Biography</option>
+                        <option value="Business">Business</option>
+                        <option value="Other">Other</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group>
+                      <Form.Label className="form-label-custom">Stock Quantity</Form.Label>
+                      <Form.Control type="number" ref={stockRef} required min="0" />
+                    </Form.Group>
+                  </Col>
+                </Row>
 
-            {/* Category & Stock */}
-            <div className="row">
-              <div className="col-md-6">
-                <Form.Group className="mb-3">
-                  <Form.Label>Category</Form.Label>
-                  <Form.Select ref={categoryRef} required>
-                    <option value="Fiction">Fiction</option>
-                    <option value="Non-Fiction">Non-Fiction</option>
-                    <option value="Science">Science</option>
-                    <option value="Technology">Technology</option>
-                    <option value="History">History</option>
-                    <option value="Biography">Biography</option>
-                    <option value="Business">Business</option>
-                    <option value="Other">Other</option>
-                  </Form.Select>
+                <Row className="g-3 mb-4">
+                  <Col md={6}>
+                    <Form.Group>
+                      <Form.Label className="form-label-custom">Price ($)</Form.Label>
+                      <Form.Control type="number" ref={priceRef} required min="0" step="0.01" />
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group>
+                      <Form.Label className="form-label-custom">Condition</Form.Label>
+                      <Form.Select ref={conditionRef} required>
+                        <option value="New">New</option>
+                        <option value="Like New">Like New</option>
+                        <option value="Good">Good</option>
+                        <option value="Fair">Fair</option>
+                        <option value="Poor">Poor</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                </Row>
+
+                <Form.Group className="mb-4">
+                  <Form.Label className="form-label-custom">Description</Form.Label>
+                  <Form.Control as="textarea" rows={4} ref={descriptionRef} required />
                 </Form.Group>
-              </div>
-              <div className="col-md-6">
-                <Form.Group className="mb-3">
-                  <Form.Label>Stock Quantity</Form.Label>
-                  <Form.Control type="number" ref={stockRef} required min="0" />
-                </Form.Group>
-              </div>
-            </div>
 
-            {/* Price & Condition */}
-            <div className="row">
-              <div className="col-md-6">
-                <Form.Group className="mb-3">
-                  <Form.Label>Price ($)</Form.Label>
-                  <Form.Control type="number" ref={priceRef} required min="0" step="0.01" />
-                </Form.Group>
-              </div>
-              <div className="col-md-6">
-                <Form.Group className="mb-3">
-                  <Form.Label>Condition</Form.Label>
-                  <Form.Select ref={conditionRef} required>
-                    <option value="New">New</option>
-                    <option value="Like New">Like New</option>
-                    <option value="Good">Good</option>
-                    <option value="Fair">Fair</option>
-                    <option value="Poor">Poor</option>
-                  </Form.Select>
-                </Form.Group>
-              </div>
-            </div>
+                <div className="file-upload-wrapper mb-4">
+                  <Form.Group>
+                    <Form.Label className="form-label-custom d-block mb-3">Update Cover Image</Form.Label>
+                    <Form.Control type="file" ref={imageRef} accept="image/*" />
+                    <Form.Text className="text-muted mt-2 d-block">
+                      Leave empty to keep the current image.
+                    </Form.Text>
+                  </Form.Group>
+                </div>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Description</Form.Label>
-              <Form.Control as="textarea" rows={3} ref={descriptionRef} required />
-            </Form.Group>
-
-            <Form.Group className="mb-4">
-              <Form.Label>Update Cover Image (Optional)</Form.Label>
-              <Form.Control type="file" ref={imageRef} accept="image/*" />
-            </Form.Group>
-
-            <div className="d-flex gap-2">
-              <Button variant="secondary" className="w-50" onClick={() => navigate(-1)}>
-                Cancel
-              </Button>
-              <Button variant="primary" type="submit" className="w-50" disabled={submitting}>
-                {submitting ? "Updating..." : "Save Changes"}
-              </Button>
-            </div>
-          </Form>
-        </div>
-      </div>
+                <div className="d-flex gap-3 mt-5">
+                  <Button variant="secondary" className="w-50 py-3 fw-bold" onClick={() => navigate(-1)}>
+                    Cancel
+                  </Button>
+                  <Button variant="success" type="submit" className="w-50 py-3 btn-submit" disabled={submitting}>
+                    {submitting ? "Updating..." : "Save Changes"}
+                  </Button>
+                </div>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
     </Container>
   );
 };

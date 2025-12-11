@@ -1,0 +1,53 @@
+.form-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  background: #fff;
+  overflow: hidden;
+}
+
+.form-header {
+  background: #212529; 
+  color: #fff;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.form-header h2 {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.75rem;
+}
+
+.form-label-custom {
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #ffc107;
+  box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+}
+
+.file-upload-wrapper {
+  background: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.file-upload-wrapper:hover {
+  background: #fff;
+  border-color: #ffc107;
+}
+
+.btn-submit {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 0.75rem;
+  text-transform: uppercase;
+}
