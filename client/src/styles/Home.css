@@ -1,0 +1,50 @@
+.hero-section {
+  background: linear-gradient(45deg, #212529, #343a40);
+  padding: 3rem 0;
+  margin-bottom: 3rem;
+  box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+}
+
+.search-card {
+  padding: 0.5rem;
+  border: none;
+  box-shadow: 0 1rem 3rem rgba(0,0,0,.175) !important;
+}
+
+.category-select {
+  cursor: pointer;
+  font-weight: 600;
+  color: #6c757d; 
+}
+
+.book-card {
+  height: 100%;
+  border: none !important;
+  box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.card-img-wrapper {
+  height: 220px;
+  overflow: hidden;
+  position: relative;
+}
+
+.card-img-custom {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.category-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0.5rem;
+  box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+}
