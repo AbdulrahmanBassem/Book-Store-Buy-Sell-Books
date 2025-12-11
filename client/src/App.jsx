@@ -26,6 +26,7 @@ import { ResetPassword } from "./pages/ResetPassword";
 import { api } from "./apis/api";
 import { setUser, clearUser } from "./store/slices/userSlice";
 import { errorHandler } from "./utils/errorHandler";
+import { Footer } from "./components/Footer/Footer";
 
 export default function App() {
   const { isLoggedIn } = useSelector((state) => state.user);
@@ -90,6 +91,7 @@ export default function App() {
           />
         </Routes>
       </Container>
+      <Footer />
     </div>
   );
 }
