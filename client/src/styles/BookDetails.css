@@ -1,0 +1,66 @@
+.book-details-container {
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+}
+
+.book-cover-wrapper {
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.book-cover-img {
+  max-height: 500px;
+  width: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.book-cover-img:hover {
+  transform: scale(1.02);
+}
+
+.book-title {
+  font-weight: 800;
+  color: #212529;
+  line-height: 1.2;
+}
+
+.book-author {
+  font-size: 1.25rem;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.price-tag {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #0d6efd; 
+}
+
+.description-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #495057;
+}
+
+.badge-custom {
+  font-size: 0.9rem;
+  padding: 0.5em 1em;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.seller-info {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #0d6efd;
+  font-size: 0.95rem;
+  color: #6c757d;
+}

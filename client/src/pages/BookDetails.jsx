@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Container, Row, Col, Button, Badge, Card, Spinner } from "react-bootstrap";
+import { Container, Row, Col, Button, Badge, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { api } from "../apis/api";
 import { errorHandler } from "../utils/errorHandler";
 import { Loading } from "../components/Loading/Loading";
+
+// CSS
+import "../styles/BookDetails.css";
 
 export const BookDetails = () => {
   const { id } = useParams();
@@ -46,6 +49,7 @@ export const BookDetails = () => {
     try {
       await api.post(`/api/purchases/${book._id}`);
       toast.success("Purchase successful!");
+      
       const response = await api.get(`/api/books/${id}`);
       setBook(response.data.data);
       
@@ -78,46 +82,48 @@ export const BookDetails = () => {
   const isOutOfStock = book.stock < 1;
 
   return (
-    <Container className="my-5">
-      <Row className="justify-content-center">
-        <Col md={5} className="mb-4">
-          <Card className="shadow-sm border-0">
-            <Card.Img
-              variant="top"
+    <Container className="book-details-container">
+      <Row className="g-5 justify-content-center">
+        <Col md={5}>
+          <div className="book-cover-wrapper">
+            <img
               src={book.image ? `${baseURL}/${book.image}` : "https://via.placeholder.com/400"}
-              style={{ maxHeight: "500px", objectFit: "contain", backgroundColor: "#f8f9fa" }}
+              alt={book.title}
+              className="book-cover-img"
             />
-          </Card>
+          </div>
         </Col>
 
         <Col md={7}>
-          <h2 className="display-5 fw-bold">{book.title}</h2>
-          <h4 className="text-muted mb-3">by {book.author}</h4>
+          <h1 className="book-title mb-2">{book.title}</h1>
+          <p className="book-author mb-4">by {book.author}</p>
           
-          <div className="mb-4">
-            <Badge bg="secondary" className="me-2 p-2">
+          <div className="mb-4 d-flex flex-wrap gap-2">
+            <Badge bg="secondary" className="badge-custom">
               {book.category || "General"}
             </Badge>
-            <Badge bg="info" className="me-2 p-2 text-dark">
+            <Badge bg="info" className="badge-custom text-dark">
               Condition: {book.condition}
             </Badge>
-            <Badge bg={isOutOfStock ? "danger" : "success"} className="p-2">
+            <Badge bg={isOutOfStock ? "danger" : "success"} className="badge-custom">
               {isOutOfStock ? "Out of Stock" : `${book.stock} In Stock`}
             </Badge>
           </div>
 
-          <h3 className="text-primary mb-4">${book.price}</h3>
+          <div className="mb-4">
+            <span className="price-tag">${book.price}</span>
+          </div>
 
-          <p className="lead" style={{ fontSize: "1.1rem" }}>{book.description}</p>
+          <h5 className="fw-bold mb-2">Description</h5>
+          <p className="description-text mb-5">{book.description}</p>
 
-          <hr className="my-4" />
-
-          <div className="d-flex gap-3">
+          <div className="d-flex gap-3 mb-4">
             {isOwner ? (
               <>
                 <Button 
                   variant="outline-primary" 
                   size="lg"
+                  className="px-4 fw-bold"
                   onClick={() => navigate(`/edit-book/${book._id}`)} 
                   disabled={actionLoading}
                 >
@@ -126,6 +132,7 @@ export const BookDetails = () => {
                 <Button 
                   variant="danger" 
                   size="lg"
+                  className="px-4 fw-bold"
                   onClick={handleDelete}
                   disabled={actionLoading}
                 >
@@ -136,7 +143,7 @@ export const BookDetails = () => {
               <Button 
                 variant="success" 
                 size="lg" 
-                className="px-5"
+                className="px-5 py-3 fw-bold shadow-sm"
                 onClick={handleBuy}
                 disabled={isOutOfStock || actionLoading}
               >
@@ -145,8 +152,8 @@ export const BookDetails = () => {
             )}
           </div>
           
-          <div className="mt-3">
-             <small className="text-muted">Seller: {book.seller?.name || "Unknown"}</small>
+          <div className="seller-info">
+             Sold by: <strong>{book.seller?.name || "Unknown"}</strong>
           </div>
         </Col>
       </Row>
