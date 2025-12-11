@@ -1,15 +1,18 @@
 import { useRef, useState } from "react";
-import { Button, Form, Container } from "react-bootstrap";
+import { Button, Form, Container, Row, Col, Card } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { api } from "../apis/api";
 import { errorHandler } from "../utils/errorHandler";
 import { Loading } from "../components/Loading/Loading";
 
+// CSS
+import "../styles/AuthForm.css";
+
 export const ResetPassword = () => {
-  const { token } = useParams(); 
+  const { token } = useParams();
   const navigate = useNavigate();
-  
+
   const [loading, setLoading] = useState(false);
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
@@ -28,13 +31,9 @@ export const ResetPassword = () => {
     }
 
     try {
-      const data = {
-        token,
-        password,
-      };
-
+      const data = { token, password };
       const response = await api.post("/api/auth/reset-password", data);
-      
+
       toast.success(response.data.message);
       navigate("/login");
     } catch (error) {
@@ -48,38 +47,51 @@ export const ResetPassword = () => {
 
   return (
     <Container className="my-5">
-      <div className="row justify-content-center">
-        <div className="col-md-6 col-lg-4">
-          <h2 className="text-center mb-4">Reset Password</h2>
-          
-          <Form onSubmit={handleResetPassword} className="border p-4 rounded shadow-sm bg-white">
-            <Form.Group className="mb-3">
-              <Form.Label>New Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Enter new password"
-                ref={passwordRef}
-                required
-                minLength={6}
-              />
-            </Form.Group>
+      <Row className="justify-content-center">
+        <Col md={6} lg={5}>
+          <Card className="auth-card">
+            <div className="auth-header">
+              <h2>Reset Password</h2>
+              <p>Enter a new strong password for your account</p>
+            </div>
 
-            <Form.Group className="mb-4">
-              <Form.Label>Confirm New Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Confirm new password"
-                ref={confirmPasswordRef}
-                required
-              />
-            </Form.Group>
+            <Card.Body className="p-4 p-md-5">
+              <Form onSubmit={handleResetPassword}>
+                <Form.Group className="mb-3">
+                  <Form.Label className="form-label-auth">
+                    New Password
+                  </Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="Enter new password"
+                    ref={passwordRef}
+                    required
+                    minLength={6}
+                    className="form-control-auth"
+                  />
+                </Form.Group>
 
-            <Button variant="success" type="submit" className="w-100">
-              Change Password
-            </Button>
-          </Form>
-        </div>
-      </div>
+                <Form.Group className="mb-4">
+                  <Form.Label className="form-label-auth">
+                    Confirm New Password
+                  </Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="Confirm new password"
+                    ref={confirmPasswordRef}
+                    required
+                    className="form-control-auth"
+                  />
+                </Form.Group>
+
+                <Button variant="success" type="submit" className="btn-auth">
+                  Change Password
+                </Button>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
     </Container>
   );
 };

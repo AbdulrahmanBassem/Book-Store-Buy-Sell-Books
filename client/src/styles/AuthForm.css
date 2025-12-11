@@ -1,0 +1,74 @@
+.auth-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  background: #fff;
+  overflow: hidden;
+}
+
+.auth-header {
+  background: #212529; 
+  color: #fff;
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+.auth-header h2 {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  font-size: 1.75rem;
+}
+
+.auth-header p {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.form-label-auth {
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-control-auth {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #ced4da;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.form-control-auth:focus {
+  border-color: #ffc107; 
+  box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+}
+
+.btn-auth {
+  font-weight: 700;
+  padding: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 6px;
+  width: 100%;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: #6c757d;
+}
+
+.auth-link {
+  color: #0d6efd;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+  color: #0a58ca;
+}

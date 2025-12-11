@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Container, Row, Col, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
@@ -9,10 +9,13 @@ import { setUser } from "../store/slices/userSlice";
 import { Loading } from "../components/Loading/Loading";
 import { ResendOTP } from "../components/ResendOTP/ResendOTP";
 
+// CSS
+import "../styles/AuthForm.css";
+
 export const VerifyOTP = () => {
   const [loading, setLoading] = useState(false);
   const otpRef = useRef();
-  
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -21,7 +24,6 @@ export const VerifyOTP = () => {
     setLoading(true);
 
     const email = localStorage.getItem("email");
-
     if (!email) {
       toast.error("Session expired. Please login again.");
       navigate("/login");
@@ -29,24 +31,17 @@ export const VerifyOTP = () => {
     }
 
     try {
-      const data = {
-        email,
-        otp: otpRef.current.value,
-      };
-
+      const data = { email, otp: otpRef.current.value };
       const response = await api.post("/api/auth/verify", data);
-      
+
       const { token } = response.data;
-
-      // login after verification
       localStorage.setItem("token", token);
-      
-      const userResponse = await api.get("/api/auth/profile", {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      
-      dispatch(setUser(userResponse.data.data));
 
+      const userResponse = await api.get("/api/auth/profile", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      dispatch(setUser(userResponse.data.data));
       toast.success("Account Verified! Welcome.");
       navigate("/");
     } catch (error) {
@@ -59,36 +54,48 @@ export const VerifyOTP = () => {
   if (loading) return <Loading />;
 
   return (
-    <div className="row justify-content-center mt-5">
-      <div className="col-md-6 col-lg-4">
-        <h2 className="text-center mb-4">Verify Account</h2>
-        <p className="text-center text-muted">
-          Check your email for the 6-digit code.
-        </p>
-        
-        <Form onSubmit={handleVerify} className="border p-4 rounded shadow-sm bg-white">
-          <Form.Group className="mb-3">
-            <Form.Label>OTP Code</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter 6-digit OTP"
-              ref={otpRef}
-              maxLength={6}
-              required
-              className="text-center letter-spacing-2"
-              style={{ letterSpacing: "4px", fontSize: "1.2rem" }}
-            />
-          </Form.Group>
+    <Container className="my-5">
+      <Row className="justify-content-center">
+        <Col md={6} lg={5}>
+          <Card className="auth-card">
+            <div className="auth-header">
+              <h2>Verify Account</h2>
+              <p>Check your email for the 6-digit code</p>
+            </div>
 
-          <Button variant="success" type="submit" className="w-100 mb-3">
-            Verify
-          </Button>
+            <Card.Body className="p-4 p-md-5">
+              <Form onSubmit={handleVerify}>
+                <Form.Group className="mb-4">
+                  <Form.Label className="form-label-auth text-center w-100">
+                    Enter OTP Code
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="------"
+                    ref={otpRef}
+                    maxLength={6}
+                    required
+                    className="form-control-auth text-center fw-bold fs-4"
+                    style={{ letterSpacing: "8px" }}
+                  />
+                </Form.Group>
 
-          <div className="d-flex justify-content-center">
-            <ResendOTP />
-          </div>
-        </Form>
-      </div>
-    </div>
+                <Button
+                  variant="success"
+                  type="submit"
+                  className="btn-auth mb-3"
+                >
+                  Verify & Login
+                </Button>
+
+                <div className="text-center">
+                  <ResendOTP />
+                </div>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 };
