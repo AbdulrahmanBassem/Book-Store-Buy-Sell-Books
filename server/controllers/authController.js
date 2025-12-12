@@ -234,7 +234,6 @@ exports.resetPassword = async (req, res, next) => {
       return res.status(400).json({ message: "Invalid request" });
     }
 
-    // Find user by token and check if token is not expired
     const user = await User.findOne({
       resetPasswordToken: token,
       resetPasswordExpires: { $gt: Date.now() },
